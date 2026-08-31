@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lynda's — Cakes &amp; Pizzas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cocoa:#2B1810;
+    --cocoa-deep:#1D1009;
+    --cream:#FDF6E9;
+    --gold:#E8A33D;
+    --tomato:#C1391D;
+    --basil:#6B8E4E;
+    --cherry:#E85D75;
+    --line: rgba(253,246,233,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cocoa);
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3, .wordmark{
+    font-family:'Fraunces', serif;
+    margin:0;
+  }
+  .mono{
+    font-family:'Space Mono', monospace;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  a{color:inherit;}
+  img,svg{display:block;}
+  button{font-family:inherit;}
+
+  :focus-visible{
+    outline:3px solid var(--gold);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(29,16,9,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:16px;
+    padding-bottom:16px;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .crest{width:40px;height:40px;flex-shrink:0;}
+  .logo-text .wordmark{
+    font-size:1.5rem;
+    font-style:italic;
+    font-weight:600;
+    color:var(--cream);
+    line-height:1;
+  }
+  .logo-text .tag{
+    font-size:0.6rem;
+    color:var(--gold);
+    margin-top:2px;
+  }
+  .navlinks{
+    display:flex;
+    gap:32px;
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .navlinks a{
+    text-decoration:none;
+    font-size:0.95rem;
+    font-weight:500;
+    position:relative;
+    padding-bottom:4px;
+  }
+  .navlinks a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    height:2px; width:0;
+    background:var(--gold);
+    transition:width 0.25s ease;
+  }
+  .navlinks a:hover::after, .navlinks a:focus-visible::after{width:100%;}
+  .nav-cta{
+    background:var(--tomato);
+    color:var(--cream);
+    border:none;
+    padding:10px 20px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:0.9rem;
+    cursor:pointer;
+    transition:transform 0.2s ease, background 0.2s ease;
+  }
+  .nav-cta:hover{background:#a92e17; transform:translateY(-2px);}
+  .navtoggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:88px 0 60px;
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:40px;
+    align-items:center;
+  }
+  .eyebrow{
+    color:var(--gold);
+    font-size:0.72rem;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5vw, 4.1rem);
+    line-height:1.03;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold);
+  }
+  .hero p.lead{
+    max-width:440px;
+    margin:22px 0 32px;
+    color:rgba(253,246,233,0.78);
+    font-size:1.05rem;
+    line-height:1.6;
+  }
+  .hero-ctas{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--gold);
+    color:var(--cocoa-deep);
+    border:none;
+    padding:14px 26px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 10px 24px rgba(232,163,61,0.28);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--cream);
+    border:1px solid var(--line);
+    padding:14px 26px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:border-color 0.2s ease, background 0.2s ease;
+  }
+  .btn-ghost:hover{border-color:var(--cream); background:rgba(253,246,233,0.05);}
+
+  /* ---------- COUPLE-SHARING-PIZZA SCENE (signature element) ---------- */
+  .scene-stage{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    max-width:440px;
+    margin:0 auto;
+    border-radius:50%;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,0.45);
+  }
+  .scene-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:1px dashed rgba(253,246,233,0.25);
+    z-index:2;
+    pointer-events:none;
+  }
+  .scene-svg{position:absolute; inset:0; width:100%; height:100%;}
+
+  .diner-left{transform-origin:112px 300px; animation:sway-left 3.2s ease-in-out infinite;}
+  .diner-right{transform-origin:328px 300px; animation:sway-right 3.2s ease-in-out infinite 0.3s;}
+  @keyframes sway-left{
+    0%,100%{transform:rotate(0deg) translateY(0);}
+    50%{transform:rotate(-2.5deg) translateY(-4px);}
+  }
+  @keyframes sway-right{
+    0%,100%{transform:rotate(0deg) translateY(0);}
+    50%{transform:rotate(2.5deg) translateY(-4px);}
+  }
+  .arm-l, .arm-r{transform-origin:112px 260px; animation:arm-lift 3.2s ease-in-out infinite;}
+  .arm-r{transform-origin:328px 260px; animation-delay:0.3s;}
+  @keyframes arm-lift{
+    0%,100%{transform:rotate(0deg);}
+    50%{transform:rotate(-8deg);}
+  }
+
+  .steam-wisp{animation:steam-rise 3.6s ease-in-out infinite;}
+  .steam-wisp.w2{animation-delay:0.8s;}
+  .steam-wisp.w3{animation-delay:1.6s;}
+  @keyframes steam-rise{
+    0%{transform:translateY(10px); opacity:0;}
+    30%{opacity:0.6;}
+    70%{opacity:0.4;}
+    100%{transform:translateY(-18px); opacity:0;}
+  }
+
+  .heart-float{animation:heart-drift 4.5s ease-in-out infinite;}
+  .heart-float.h2{animation-delay:1.4s;}
+  @keyframes heart-drift{
+    0%{transform:translateY(6px); opacity:0;}
+    25%{opacity:0.85;}
+    75%{opacity:0.4;}
+    100%{transform:translateY(-16px); opacity:0;}
+  }
+
+  .scene-badge{
+    position:absolute;
+    bottom:16px; right:16px;
+    width:64px; height:64px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #3a2416, var(--cocoa-deep));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 0 0 6px rgba(29,16,9,0.5), 0 14px 24px rgba(0,0,0,0.4);
+    z-index:3;
+  }
+  .scene-badge .crest{width:32px;height:32px;}
+
+  /* ---------- SECTION HEADS ---------- */
+  section{padding:84px 0;}
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:44px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;
+    flex-wrap:wrap;
+  }
+  .section-head h2{
+    font-size:clamp(2rem,3.4vw,2.7rem);
+    font-weight:600;
+  }
+  .section-head p{
+    color:rgba(253,246,233,0.65);
+    max-width:360px;
+    margin:0;
+  }
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+
+  /* ---------- CAKES ---------- */
+  #cakes{background:var(--cocoa-deep);}
+  .cake-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
+  }
+  .cake-card{
+    background:rgba(253,246,233,0.04);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px 16px 20px;
+    text-align:center;
+    transition:transform 0.25s ease, border-color 0.25s ease;
+  }
+  .cake-card:hover{transform:translateY(-6px); border-color:rgba(232,163,61,0.5);}
+  .slice-stage{
+    width:100%;
+    height:130px;
+    position:relative;
+    margin-bottom:14px;
+  }
+  .slice{
+    position:absolute;
+    left:50%; bottom:6px;
+    transform:translateX(-50%);
+    width:88px; height:100px;
+    clip-path:polygon(50% 100%, 4% 6%, 96% 6%);
+    transition:transform 0.35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .cake-card:hover .slice{transform:translateX(-50%) rotate(-6deg) translateY(-4px);}
+  .photo-frame{
+    width:100%;
+    height:150px;
+    border-radius:16px;
+    overflow:hidden;
+    margin-bottom:14px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.35);
+  }
+  .photo-frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.35s ease;}
+  .cake-card:hover .photo-frame img{transform:scale(1.07);}
+  .slice-drip{
+    position:absolute;
+    left:50%; top:2px;
+    transform:translateX(-50%);
+    width:70px; height:14px;
+    border-radius:0 0 40px 40px;
+    transition:height 0.35s ease;
+  }
+  .cake-card:hover .slice-drip{height:24px;}
+  .crumb{
+    position:absolute;
+    width:5px;height:5px;
+    border-radius:50%;
+    opacity:0.9;
+  }
+  .cake-name{font-size:1.02rem; font-weight:600; margin-bottom:4px;}
+  .cake-note{font-size:0.82rem; color:rgba(253,246,233,0.6); margin-bottom:10px; min-height:36px;}
+  .price-tag{font-size:0.85rem; color:var(--gold);}
+
+  /* flavor palettes */
+  .flav-choc .slice{background:linear-gradient(180deg,#8B4A2B 0%,#5C2E17 100%);}
+  .flav-choc .slice-drip{background:#4A2412;}
+  .flav-red .slice{background:linear-gradient(180deg,#A22A3B 0%,#7A1F2C 100%);}
+  .flav-red .slice-drip{background:#FDF6E9;}
+  .flav-lemon .slice{background:linear-gradient(180deg,#F2C230 0%,#E0A81E 100%);}
+  .flav-lemon .slice-drip{background:#FDF6E9;}
+  .flav-berry .slice{background:linear-gradient(180deg,#FDF6E9 0%,#F3E4CE 100%);}
+  .flav-berry .slice-drip{background:#E85D75;}
+  .flav-carrot .slice{background:linear-gradient(180deg,#C97F3D 0%,#A9642A 100%);}
+  .flav-carrot .slice-drip{background:#FDF6E9;}
+
+  /* ---------- PIZZAS ---------- */
+  .pizza-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .pizza-card{
+    background:rgba(253,246,233,0.04);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:28px 20px 22px;
+    text-align:center;
+    position:relative;
+    transition:transform 0.25s ease, border-color 0.25s ease;
+  }
+  .pizza-card:hover{transform:translateY(-6px); border-color:rgba(193,57,29,0.5);}
+  .pizza-stage{
+    width:170px; height:170px;
+    margin:0 auto 16px;
+    position:relative;
+  }
+  .steam{
+    position:absolute;
+    bottom:100%;
+    width:6px; height:34px;
+    border-radius:6px;
+    background:rgba(253,246,233,0.35);
+    filter:blur(2px);
+    animation:rise 3.2s ease-in-out infinite;
+  }
+  .steam.s1{left:38%; animation-delay:0s;}
+  .steam.s2{left:50%; animation-delay:0.8s;}
+  .steam.s3{left:62%; animation-delay:1.6s;}
+  @keyframes rise{
+    0%{opacity:0; transform:translateY(0) scaleY(0.7);}
+    35%{opacity:0.6;}
+    100%{opacity:0; transform:translateY(-26px) scaleY(1.15);}
+  }
+  .pizza-base{
+    width:100%; height:100%;
+    border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, #E0A81E 0%, #E0A81E 78%, #C98A2A 79%, #C98A2A 100%);
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 14px 26px rgba(0,0,0,0.4);
+    transition:transform 0.3s ease;
+  }
+  .pizza-card:hover .pizza-base{transform:rotate(8deg) scale(1.03);}
+  .pizza-photo{
+    width:170px; height:170px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    overflow:hidden;
+    box-shadow:0 14px 26px rgba(0,0,0,0.4);
+  }
+  .pizza-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.35s ease;}
+  .pizza-card:hover .pizza-photo img{transform:scale(1.08) rotate(4deg);}
+  .pizza-sauce{
+    position:absolute;
+    inset:10%;
+    border-radius:50%;
+    background:var(--tomato);
+  }
+  .pizza-cheese{
+    position:absolute;
+    inset:10%;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35) 0 6px, transparent 7px),
+      radial-gradient(circle at 65% 25%, rgba(255,255,255,0.3) 0 5px, transparent 6px),
+      radial-gradient(circle at 50% 55%, rgba(255,255,255,0.3) 0 7px, transparent 8px),
+      radial-gradient(circle at 25% 65%, rgba(255,255,255,0.25) 0 5px, transparent 6px),
+      radial-gradient(circle at 75% 70%, rgba(255,255,255,0.3) 0 6px, transparent 7px),
+      #F4D58D;
+    animation:bubble 4s ease-in-out infinite;
+  }
+  @keyframes bubble{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.02);}
+  }
+  .topping{position:absolute; border-radius:50%; transition:transform 0.3s ease;}
+  .pizza-card:hover .topping{transform:scale(1.12);}
+  .pep{width:16px;height:16px;background:radial-gradient(circle at 35% 35%,#B23A26,#7C2216);}
+  .basil{width:14px;height:9px;background:var(--basil); border-radius:50% 0 50% 50%;}
+  .pepper{width:16px;height:9px;background:#8FA84A; border-radius:6px; transform:rotate(20deg);}
+  .olive{width:9px;height:9px;background:#3B2216;}
+
+  .size-pill{
+    display:inline-block;
+    margin-top:2px;
+    margin-bottom:8px;
+    font-size:0.65rem;
+    color:var(--cocoa-deep);
+    background:var(--gold);
+    padding:4px 10px;
+    border-radius:999px;
+  }
+
+  /* ---------- ORDER BAND ---------- */
+  .order-band{
+    background:repeating-linear-gradient(135deg, var(--tomato) 0 26px, #a92e17 26px 52px);
+    padding:0;
+  }
+  .order-band .inner{
+    background:var(--cocoa-deep);
+    margin:10px;
+    border-radius:20px;
+    padding:56px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .order-band h2{font-size:clamp(1.7rem,3vw,2.3rem); max-width:480px;}
+  .order-band p{color:rgba(253,246,233,0.65); margin-top:10px; max-width:420px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:56px 0 40px;
+    border-top:1px solid var(--line);
+  }
+  .foot-grid{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:32px;
+    margin-bottom:32px;
+  }
+  .foot-col h4{
+    font-family:'Work Sans', sans-serif;
+    font-size:0.72rem;
+    color:var(--gold);
+    margin-bottom:14px;
+  }
+  .foot-col p, .foot-col a{
+    display:block;
+    color:rgba(253,246,233,0.75);
+    text-decoration:none;
+    font-size:0.92rem;
+    margin-bottom:8px;
+  }
+  .foot-col a:hover{color:var(--cream);}
+  .foot-bottom{
+    display:flex;
+    justify-content:space-between;
+    color:rgba(253,246,233,0.4);
+    font-size:0.78rem;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr; padding-top:48px;}
+    .hero-art{order:-1;}
+    .navlinks{display:none;}
+    .cake-grid{grid-template-columns:repeat(2,1fr);}
+    .pizza-grid{grid-template-columns:1fr;}
+    .order-band .inner{flex-direction:column; text-align:center;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .diner-left, .diner-right, .arm-l, .arm-r, .steam-wisp, .heart-float, .steam, .pizza-cheese{animation:none !important;}
+    .reveal{transition:none; opacity:1; transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">
+      <svg class="crest" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="31" fill="none" stroke="#E8A33D" stroke-width="1.5"/>
+        <path d="M20 40 C20 26, 44 26, 44 40" fill="none" stroke="#FDF6E9" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="20" cy="40" r="2.6" fill="#E8A33D"/>
+        <circle cx="44" cy="40" r="2.6" fill="#C1391D"/>
+        <path d="M32 14 L38 26 L26 26 Z" fill="#C1391D"/>
+        <circle cx="32" cy="20.5" r="1.6" fill="#F4D58D"/>
+      </svg>
+      <div class="logo-text">
+        <div class="wordmark">Lynda's</div>
+        <div class="tag mono">Cakes &amp; Pizzas</div>
+      </div>
+    </div>
+    <ul class="navlinks">
+      <li><a href="#cakes">Cakes</a></li>
+      <li><a href="#pizzas">Pizzas</a></li>
+      <li><a href="#order">Order</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="#order" style="text-decoration:none; display:inline-flex; align-items:center;">Order Now</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-inner" style="display:contents;">
+      <div class="hero-copy">
+        <div class="eyebrow mono">Nairobi · Baked &amp; Fired Daily</div>
+        <h1>Cake for the<br>occasion. <em>Pizza</em><br>for right now.</h1>
+        <p class="lead">Lynda's bakes layered cakes in five house flavours and fires medium pizzas fresh to order — pick sweet, savoury, or both.</p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="#cakes" style="text-decoration:none; display:inline-flex; align-items:center;">See the menu</a>
+          <a class="btn-ghost" href="https://wa.me/254745318402?text=Hi%20Lynda's%2C%20I'd%20like%20to%20place%20an%20order" target="_blank" rel="noopener" style="text-decoration:none; display:inline-flex; align-items:center;">Order on WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <div class="scene-stage">
+          <div class="scene-ring"></div>
+          <svg class="scene-svg" viewBox="0 0 440 440" aria-hidden="true">
+            <defs>
+              <radialGradient id="sceneBg" cx="50%" cy="42%" r="65%">
+                <stop offset="0%" stop-color="#3a2416"/>
+                <stop offset="100%" stop-color="#1D1009"/>
+              </radialGradient>
+              <linearGradient id="skinF" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#F0BE8E"/>
+                <stop offset="100%" stop-color="#DDA06C"/>
+              </linearGradient>
+              <linearGradient id="skinM" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#D89C69"/>
+                <stop offset="100%" stop-color="#BC7D48"/>
+              </linearGradient>
+              <linearGradient id="hairF" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3a2418"/>
+                <stop offset="100%" stop-color="#1c110a"/>
+              </linearGradient>
+              <linearGradient id="hairM" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#241611"/>
+                <stop offset="100%" stop-color="#120b07"/>
+              </linearGradient>
+              <linearGradient id="shirtF" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#D9502E"/>
+                <stop offset="100%" stop-color="#A82C13"/>
+              </linearGradient>
+              <linearGradient id="shirtM" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7FA05B"/>
+                <stop offset="100%" stop-color="#597240"/>
+              </linearGradient>
+            </defs>
+            <circle cx="220" cy="220" r="212" fill="url(#sceneBg)"/>
+
+            <!-- table -->
+            <ellipse cx="220" cy="330" rx="168" ry="34" fill="#3a2416" opacity="0.9"/>
+            <ellipse cx="220" cy="326" rx="168" ry="30" fill="#4a2f1c"/>
+
+            <!-- steam -->
+            <g class="steam-wisp w1" opacity="0.55">
+              <path d="M198 210 C190 196, 206 188, 198 174 C190 160, 206 152, 200 140" fill="none" stroke="#FDF6E9" stroke-width="5" stroke-linecap="round"/>
+            </g>
+            <g class="steam-wisp w2" opacity="0.5">
+              <path d="M242 206 C234 192, 250 184, 242 170 C234 156, 250 148, 244 136" fill="none" stroke="#FDF6E9" stroke-width="5" stroke-linecap="round"/>
+            </g>
+            <g class="steam-wisp w3" opacity="0.4">
+              <path d="M220 214 C212 200, 228 192, 220 178 C212 164, 228 156, 222 144" fill="none" stroke="#FDF6E9" stroke-width="4" stroke-linecap="round"/>
+            </g>
+
+            <!-- pizza (Polo Pizza) -->
+            <g transform="translate(220,300)">
+              <circle r="72" fill="#E8A33D"/>
+              <circle r="64" fill="#F1C56B"/>
+              <circle cx="-26" cy="-14" r="7" fill="#FDF6E9"/>
+              <circle cx="18" cy="-24" r="6" fill="#FDF6E9"/>
+              <circle cx="30" cy="16" r="7" fill="#FDF6E9"/>
+              <circle cx="-8" cy="24" r="6" fill="#FDF6E9"/>
+              <circle cx="-30" cy="18" r="4" fill="#C1391D" opacity="0.85"/>
+              <circle cx="10" cy="-8" r="4" fill="#C1391D" opacity="0.85"/>
+              <circle cx="26" cy="-22" r="3.5" fill="#C1391D" opacity="0.85"/>
+              <circle cx="-4" cy="30" r="3.5" fill="#C1391D" opacity="0.85"/>
+              <circle cx="34" cy="4" r="3" fill="#6B8E4E"/>
+              <circle cx="-20" cy="-30" r="3" fill="#6B8E4E"/>
+              <circle cx="0" cy="0" r="3" fill="#6B8E4E"/>
+            </g>
+
+            <!-- left diner: woman -->
+            <g class="diner diner-left">
+              <ellipse cx="112" cy="300" rx="34" ry="10" fill="#000" opacity="0.18"/>
+              <!-- torso / shirt -->
+              <path d="M74 302 C74 256, 150 256, 150 302 L150 312 L74 312 Z" fill="url(#shirtF)"/>
+              <path d="M92 262 C100 270, 124 270, 132 262 L132 274 C124 280, 100 280, 92 274 Z" fill="#8f2513" opacity="0.6"/>
+              <!-- neck -->
+              <rect x="103" y="248" width="18" height="20" rx="6" fill="url(#skinF)"/>
+              <!-- back hair (ponytail) -->
+              <path d="M144 214 C154 224, 152 252, 138 264 C146 250, 146 224, 138 210 Z" fill="url(#hairF)"/>
+              <ellipse cx="140" cy="216" rx="4" ry="4" fill="#C1391D"/>
+              <!-- ears -->
+              <ellipse cx="80" cy="226" rx="5" ry="7" fill="url(#skinF)"/>
+              <ellipse cx="144" cy="226" rx="5" ry="7" fill="url(#skinF)"/>
+              <!-- head -->
+              <ellipse cx="112" cy="224" rx="32" ry="34" fill="url(#skinF)"/>
+              <!-- cheek blush -->
+              <ellipse cx="92" cy="234" rx="7" ry="4.5" fill="#E8577A" opacity="0.28"/>
+              <ellipse cx="132" cy="234" rx="7" ry="4.5" fill="#E8577A" opacity="0.28"/>
+              <!-- hair top / fringe -->
+              <path d="M78 216 C78 182, 146 182, 146 216 C146 200, 132 194, 112 194 C92 194, 78 200, 78 216 Z" fill="url(#hairF)"/>
+              <path d="M82 206 C90 198, 100 196, 108 198" fill="none" stroke="#241610" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+              <!-- eyebrows -->
+              <path d="M92 216 C97 212, 104 212, 108 215" fill="none" stroke="#241610" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M118 215 C122 212, 129 212, 134 216" fill="none" stroke="#241610" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- eyes -->
+              <ellipse cx="100" cy="224" rx="5.5" ry="6.2" fill="#FDF6E9"/>
+              <ellipse cx="126" cy="224" rx="5.5" ry="6.2" fill="#FDF6E9"/>
+              <circle cx="101" cy="225" r="3" fill="#2B1810"/>
+              <circle cx="125" cy="225" r="3" fill="#2B1810"/>
+              <circle cx="102.2" cy="223.5" r="0.9" fill="#fff"/>
+              <circle cx="126.2" cy="223.5" r="0.9" fill="#fff"/>
+              <!-- nose -->
+              <path d="M111 228 C109 234, 109 238, 113 239" fill="none" stroke="#C98A55" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+              <!-- smiling open mouth -->
+              <path d="M100 246 C106 253, 120 253, 126 246 C120 250, 106 250, 100 246 Z" fill="#7A2418"/>
+              <path d="M103 246.5 C108 249, 118 249, 123 246.5" fill="none" stroke="#FDF6E9" stroke-width="2" stroke-linecap="round"/>
+              <!-- arm + hand holding pizza slice -->
+              <path class="arm-l" d="M94 270 C92 250, 116 240, 138 236" fill="none" stroke="url(#skinF)" stroke-width="13" stroke-linecap="round"/>
+              <g class="arm-l" transform="translate(138,236)">
+                <ellipse rx="9" ry="7" fill="url(#skinF)"/>
+                <path d="M-4 -18 L14 -10 L4 6 Z" fill="#F1C56B"/>
+                <circle cx="2" cy="-6" r="2" fill="#C1391D"/>
+                <circle cx="7" cy="-2" r="1.6" fill="#6B8E4E"/>
+              </g>
+            </g>
+
+            <!-- right diner: man -->
+            <g class="diner diner-right">
+              <ellipse cx="328" cy="300" rx="34" ry="10" fill="#000" opacity="0.18"/>
+              <!-- torso / shirt -->
+              <path d="M290 302 C290 256, 366 256, 366 302 L366 312 L290 312 Z" fill="url(#shirtM)"/>
+              <path d="M308 260 C316 268, 340 268, 348 260 L348 272 C340 278, 316 278, 308 272 Z" fill="#3f5228" opacity="0.6"/>
+              <!-- neck -->
+              <rect x="319" y="248" width="18" height="20" rx="6" fill="url(#skinM)"/>
+              <!-- ears -->
+              <ellipse cx="296" cy="226" rx="5" ry="7" fill="url(#skinM)"/>
+              <ellipse cx="360" cy="226" rx="5" ry="7" fill="url(#skinM)"/>
+              <!-- head -->
+              <ellipse cx="328" cy="224" rx="32" ry="34" fill="url(#skinM)"/>
+              <!-- jaw shading (light stubble) -->
+              <path d="M300 236 C308 250, 348 250, 356 236 C350 246, 306 246, 300 236 Z" fill="#241610" opacity="0.18"/>
+              <!-- short textured hair -->
+              <path d="M294 214 C294 176, 362 176, 362 214 C362 196, 350 188, 328 188 C306 188, 294 196, 294 214 Z" fill="url(#hairM)"/>
+              <path d="M300 200 L306 194 M312 196 L317 190 M324 194 L328 188 M336 194 L342 190 M348 198 L354 194" stroke="#0d0704" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+              <!-- eyebrows -->
+              <path d="M306 216 C311 211, 319 211, 324 215" fill="none" stroke="#0d0704" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M332 215 C337 211, 345 211, 350 216" fill="none" stroke="#0d0704" stroke-width="2.6" stroke-linecap="round"/>
+              <!-- eyes -->
+              <ellipse cx="315" cy="224" rx="5.5" ry="6" fill="#FDF6E9"/>
+              <ellipse cx="341" cy="224" rx="5.5" ry="6" fill="#FDF6E9"/>
+              <circle cx="316" cy="225" r="3" fill="#1c1108"/>
+              <circle cx="340" cy="225" r="3" fill="#1c1108"/>
+              <circle cx="317.2" cy="223.5" r="0.9" fill="#fff"/>
+              <circle cx="341.2" cy="223.5" r="0.9" fill="#fff"/>
+              <!-- nose -->
+              <path d="M327 228 C325 235, 325 239, 329 240" fill="none" stroke="#8a5a34" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+              <!-- smiling open mouth -->
+              <path d="M315 247 C321 254, 335 254, 341 247 C335 251, 321 251, 315 247 Z" fill="#6b2013"/>
+              <path d="M318 247.5 C323 250, 333 250, 338 247.5" fill="none" stroke="#FDF6E9" stroke-width="2" stroke-linecap="round"/>
+              <!-- light stubble dots -->
+              <circle cx="308" cy="242" r="0.9" fill="#0d0704" opacity="0.35"/>
+              <circle cx="313" cy="246" r="0.9" fill="#0d0704" opacity="0.35"/>
+              <circle cx="343" cy="246" r="0.9" fill="#0d0704" opacity="0.35"/>
+              <circle cx="348" cy="242" r="0.9" fill="#0d0704" opacity="0.35"/>
+              <!-- arm + hand holding pizza slice -->
+              <path class="arm-r" d="M346 270 C348 250, 324 240, 302 236" fill="none" stroke="url(#skinM)" stroke-width="13" stroke-linecap="round"/>
+              <g class="arm-r" transform="translate(302,236)">
+                <ellipse rx="9" ry="7" fill="url(#skinM)"/>
+                <path d="M4 -18 L-14 -10 L-4 6 Z" fill="#F1C56B"/>
+                <circle cx="-2" cy="-6" r="2" fill="#C1391D"/>
+                <circle cx="-7" cy="-2" r="1.6" fill="#6B8E4E"/>
+              </g>
+            </g>
+
+            <!-- floating hearts -->
+            <g class="heart-float h1" opacity="0.8">
+              <path d="M0 4 C0 -2, -8 -2, -8 4 C-8 9, 0 14, 0 18 C0 14, 8 9, 8 4 C8 -2, 0 -2, 0 4 Z" fill="#E85D75" transform="translate(150,130) scale(0.8)"/>
+            </g>
+            <g class="heart-float h2" opacity="0.7">
+              <path d="M0 4 C0 -2, -8 -2, -8 4 C-8 9, 0 14, 0 18 C0 14, 8 9, 8 4 C8 -2, 0 -2, 0 4 Z" fill="#E85D75" transform="translate(290,120) scale(0.6)"/>
+            </g>
+          </svg>
+          <div class="scene-badge">
+            <svg class="crest" viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M20 40 C20 26, 44 26, 44 40" fill="none" stroke="#FDF6E9" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="20" cy="40" r="2.6" fill="#E8A33D"/>
+              <circle cx="44" cy="40" r="2.6" fill="#C1391D"/>
+              <path d="M32 14 L38 26 L26 26 Z" fill="#C1391D"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cakes">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Five flavours,<br>one counter.</h2>
+        <p>Every cake is baked whole each morning and sliced to order. Hover a slice to see it up close.</p>
+      </div>
+      <div class="cake-grid">
+
+        <div class="cake-card reveal flav-choc">
+          <div class="photo-frame">
+            <img src="https://images.unsplash.com/photo-1564844536308-75c540dbf14e?auto=format&fit=crop&w=500&q=80" alt="Chocolate Fudge cake slice" loading="lazy">
+          </div>
+          <div class="cake-name">Chocolate Fudge</div>
+          <div class="cake-note">Dark cocoa sponge, whipped ganache</div>
+          <div class="price-tag mono">Ksh 350 / slice</div>
+        </div>
+
+        <div class="cake-card reveal flav-red">
+          <div class="photo-frame">
+            <img src="https://images.unsplash.com/photo-1543287920-26349b5b1376?auto=format&fit=crop&w=500&q=80" alt="Red Velvet cake" loading="lazy">
+          </div>
+          <div class="cake-name">Red Velvet</div>
+          <div class="cake-note">Cream cheese frosting, cocoa crumb</div>
+          <div class="price-tag mono">Ksh 380 / slice</div>
+        </div>
+
+        <div class="cake-card reveal flav-lemon">
+          <div class="photo-frame">
+            <img src="https://images.unsplash.com/photo-1560825027-8736bf1f955a?auto=format&fit=crop&w=500&q=80" alt="Lemon Zest cake" loading="lazy">
+          </div>
+          <div class="cake-name">Lemon Zest</div>
+          <div class="cake-note">Citrus sponge, tart lemon glaze</div>
+          <div class="price-tag mono">Ksh 350 / slice</div>
+        </div>
+
+        <div class="cake-card reveal flav-berry">
+          <div class="photo-frame">
+            <img src="https://images.unsplash.com/photo-1565685715007-06f2c4c44d19?auto=format&fit=crop&w=500&q=80" alt="Strawberry Vanilla cake slice" loading="lazy">
+          </div>
+          <div class="cake-name">Strawberry Vanilla</div>
+          <div class="cake-note">Vanilla bean sponge, fresh berry cream</div>
+          <div class="price-tag mono">Ksh 380 / slice</div>
+        </div>
+
+        <div class="cake-card reveal flav-carrot">
+          <div class="photo-frame">
+            <img src="https://images.unsplash.com/photo-1607269832078-1a3bd22a306d?auto=format&fit=crop&w=500&q=80" alt="Carrot Spice cake" loading="lazy">
+          </div>
+          <div class="cake-name">Carrot Spice</div>
+          <div class="cake-note">Warm spice, walnut, cream cheese top</div>
+          <div class="price-tag mono">Ksh 360 / slice</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="pizzas" style="background:var(--cocoa);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Medium pizzas,<br>fired fresh.</h2>
+        <p>Every pizza on the menu comes in one honest size — a 12-inch medium, built to share.</p>
+      </div>
+      <div class="pizza-grid">
+
+        <div class="pizza-card reveal">
+          <div class="pizza-photo">
+            <img src="https://images.unsplash.com/photo-1649688423692-308d2fc1027d?auto=format&fit=crop&w=500&q=80" alt="Margherita pizza">
+          </div>
+          <div class="size-pill mono">Medium · 12"</div>
+          <div class="cake-name">Margherita</div>
+          <div class="cake-note">San marzano sauce, mozzarella, basil</div>
+          <div class="price-tag mono">Ksh 1,100</div>
+        </div>
+
+        <div class="pizza-card reveal">
+          <div class="pizza-photo">
+            <img src="https://images.unsplash.com/photo-1604917869287-3ae73c77e227?auto=format&fit=crop&w=500&q=80" alt="Polo Pizza with grilled chicken">
+          </div>
+          <div class="size-pill mono">Medium · 12"</div>
+          <div class="cake-name">Polo Pizza</div>
+          <div class="cake-note">Chicken breast, oregano, red onions, mozzarella, barbecue sauce</div>
+          <div class="price-tag mono">Ksh 1,400</div>
+        </div>
+
+        <div class="pizza-card reveal">
+          <div class="pizza-photo">
+            <img src="https://images.unsplash.com/photo-1671572579989-fa11cbd86eef?auto=format&fit=crop&w=500&q=80" alt="Cajun Pizza with grilled chicken and pineapple">
+          </div>
+          <div class="size-pill mono">Medium · 12"</div>
+          <div class="cake-name">Cajun Pizza</div>
+          <div class="cake-note">Dania sauce, mozzarella, pineapple, grilled chicken</div>
+          <div class="price-tag mono">Ksh 1,750</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="order" class="order-band">
+    <div class="wrap">
+      <div class="inner reveal">
+        <div>
+          <h2>Cake and pizza,<br>same order.</h2>
+          <p>Call ahead for same-day cake slices, or have a pizza fired while you wait. Both counters open together.</p>
+        </div>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="tel:+254745318402" style="text-decoration:none; display:inline-flex; align-items:center;">Call to Order</a>
+          <a class="btn-ghost" href="https://wa.me/254745318402?text=Hi%20Lynda's%2C%20I'd%20like%20to%20place%20an%20order" target="_blank" rel="noopener" style="text-decoration:none; display:inline-flex; align-items:center;">WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="logo" style="margin-bottom:6px;">
+          <svg class="crest" viewBox="0 0 64 64" aria-hidden="true" style="width:32px;height:32px;">
+            <path d="M20 40 C20 26, 44 26, 44 40" fill="none" stroke="#FDF6E9" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="20" cy="40" r="2.6" fill="#E8A33D"/>
+            <circle cx="44" cy="40" r="2.6" fill="#C1391D"/>
+            <path d="M32 14 L38 26 L26 26 Z" fill="#C1391D"/>
+          </svg>
+          <div class="wordmark" style="font-size:1.1rem;">Lynda's</div>
+        </div>
+        <p style="max-width:220px;">Cakes and pizzas, baked and fired fresh, every day.</p>
+      </div>
+      <div class="foot-col">
+        <h4 class="mono">Visit</h4>
+        <p>Nairobi, Kenya</p>
+        <p>Tue – Sun, 9am – 9pm</p>
+      </div>
+      <div class="foot-col">
+        <h4 class="mono">Order</h4>
+        <a href="tel:+254745318402">Call the counter</a>
+        <a href="https://wa.me/254745318402?text=Hi%20Lynda's%2C%20I'd%20like%20to%20place%20an%20order" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Lynda's Cakes &amp; Pizzas</span>
+      <span>Developed by Mburia Technologies</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
